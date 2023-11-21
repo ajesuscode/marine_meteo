@@ -1,13 +1,13 @@
 // tests/marineApiSdk.test.ts
 
-import MarineApiSdk from '../src/openMarine';
+import OpenMarine from '../src/openMarine';
 import axios from 'axios';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe('MarineApiSdk getHourlyForecast', () => {
-  const sdk = new MarineApiSdk(mockedAxios);
+describe('OpenMarine getHourly', () => {
+  const sdk = new OpenMarine(mockedAxios);
 
   it('should fetch hourly forecast data successfully', async () => {
     mockedAxios.get.mockResolvedValue({
@@ -21,7 +21,7 @@ describe('MarineApiSdk getHourlyForecast', () => {
       },
     });
 
-    const response = await sdk.getHourlyForecast(54, 10, ['wave_height']);
+    const response = await sdk.getHourly(54, 10, ['wave_height']);
     expect(response.hourly).toBeDefined();
     if (response.hourly) {
       expect(response.hourly.time).toEqual([
@@ -33,27 +33,27 @@ describe('MarineApiSdk getHourlyForecast', () => {
   });
 
   it('should throw an error for invalid latitude or longitude in hourly forecast', async () => {
-    await expect(
-      sdk.getHourlyForecast(-100, 10, ['wave_height']),
-    ).rejects.toThrow('Invalid latitude or longitude values.');
+    await expect(sdk.getHourly(-100, 10, ['wave_height'])).rejects.toThrow(
+      'Invalid latitude or longitude values.',
+    );
   });
 
   it('should handle network errors for hourly forecast', async () => {
     mockedAxios.get.mockRejectedValue(new Error('Network Error'));
-    await expect(
-      sdk.getHourlyForecast(54, 10, ['wave_height']),
-    ).rejects.toThrow('Network Error');
+    await expect(sdk.getHourly(54, 10, ['wave_height'])).rejects.toThrow(
+      'Network Error',
+    );
   });
 
   it('should throw an error when no parameters are provided for hourly forecast', async () => {
-    await expect(sdk.getHourlyForecast(54, 10, [])).rejects.toThrow(
-      'At least one parameter is required for the hourly forecast.',
+    await expect(sdk.getHourly(54, 10, [])).rejects.toThrow(
+      'At least one parameter is required for the forecast.',
     );
   });
 });
 
-describe('MarineApiSdk getDailyForecast', () => {
-  const sdk = new MarineApiSdk(mockedAxios);
+describe('OpenMarine getDaily', () => {
+  const sdk = new OpenMarine(mockedAxios);
 
   it('should fetch daily forecast data successfully', async () => {
     mockedAxios.get.mockResolvedValue({
@@ -67,7 +67,7 @@ describe('MarineApiSdk getDailyForecast', () => {
       },
     });
 
-    const response = await sdk.getDailyForecast(54, 10, ['wave_height_max']);
+    const response = await sdk.getDaily(54, 10, ['wave_height_max']);
     expect(response.daily).toBeDefined();
     if (response.daily) {
       expect(response.daily.time).toEqual(['2023-11-21', '2023-11-22']);
@@ -75,22 +75,22 @@ describe('MarineApiSdk getDailyForecast', () => {
     }
   });
 
-  it('should throw an error for no parameters in daily forecast', async () => {
-    await expect(sdk.getDailyForecast(54, 10, [])).rejects.toThrow(
-      'At least one parameter is required for the daily forecast.',
+  it('should throw an error when no parameters are provided for hourly forecast', async () => {
+    await expect(sdk.getHourly(54, 10, [])).rejects.toThrow(
+      'At least one parameter is required for the forecast.',
     );
   });
 
   it('should handle errors in hourly forecast API call', async () => {
     mockedAxios.get.mockRejectedValue(new Error('API Error'));
-    await expect(
-      sdk.getHourlyForecast(54, 10, ['wave_height']),
-    ).rejects.toThrow('API Error');
+    await expect(sdk.getDaily(54, 10, ['wave_height'])).rejects.toThrow(
+      'API Error',
+    );
   });
 });
 
-describe('MarineApiSdk getCurrentForecast', () => {
-  const sdk = new MarineApiSdk(mockedAxios);
+describe('OpenMarine getCurrent', () => {
+  const sdk = new OpenMarine(mockedAxios);
 
   it('should fetch current forecast data successfully', async () => {
     mockedAxios.get.mockResolvedValue({
@@ -105,7 +105,7 @@ describe('MarineApiSdk getCurrentForecast', () => {
       },
     });
 
-    const response = await sdk.getCurrentForecast(54, 10, ['wave_height']);
+    const response = await sdk.getCurrent(54, 10, ['wave_height']);
     expect(response.current).toBeDefined();
     if (response.current) {
       expect(response.current.time).toEqual('2023-11-21T11:00');
@@ -113,16 +113,16 @@ describe('MarineApiSdk getCurrentForecast', () => {
     }
   });
 
-  it('should throw an error for no parameters in current forecast', async () => {
-    await expect(sdk.getCurrentForecast(54, 10, [])).rejects.toThrow(
-      'At least one parameter is required for the current forecast.',
+  it('should throw an error when no parameters are provided for hourly forecast', async () => {
+    await expect(sdk.getHourly(54, 10, [])).rejects.toThrow(
+      'At least one parameter is required for the forecast.',
     );
   });
 
-  it('should handle errors in hourly forecast API call', async () => {
+  it('should handle errors in current forecast API call', async () => {
     mockedAxios.get.mockRejectedValue(new Error('API Error'));
-    await expect(
-      sdk.getHourlyForecast(54, 10, ['wave_height']),
-    ).rejects.toThrow('API Error');
+    await expect(sdk.getCurrent(54, 10, ['wave_height'])).rejects.toThrow(
+      'API Error',
+    );
   });
 });
