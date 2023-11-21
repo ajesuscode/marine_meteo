@@ -1,6 +1,6 @@
 // src/marineApiSdk.ts
 
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 // Interface for the common response parts
 interface MarineApiResponse {
@@ -95,18 +95,13 @@ interface Units {
 // SDK class
 class MarineApiSdk {
   private baseUrl: string = 'https://marine-api.open-meteo.com/v1/marine';
+  private httpClient: AxiosInstance;
 
-  constructor(private httpClient = axios) {
-    // Allows for injecting a mock HTTP client for testing
+  constructor(httpClient = axios) {
+    this.httpClient = httpClient;
   }
 
-  // Constructs the URL for the API request
-  private constructUrl(
-    latitude: number,
-    longitude: number,
-    forecastType: 'hourly' | 'daily' | 'current',
-    parameters: string[],
-  ): string {
+  private validateCoordinates(latitude: number, longitude: number): void {
     if (
       latitude < -90 ||
       latitude > 90 ||
@@ -115,77 +110,60 @@ class MarineApiSdk {
     ) {
       throw new Error('Invalid latitude or longitude values.');
     }
-    const params = new URLSearchParams({
-      latitude: latitude.toString(),
-      longitude: longitude.toString(),
-      [forecastType]: parameters.join(','),
-    });
-    return `${this.baseUrl}?${params.toString()}`;
   }
 
-  // Method for hourly forecast request
-  public async getHourlyForecast(
+  private validateParameters(parameters: string[]): void {
+    if (parameters.length === 0) {
+      throw new Error('At least one parameter is required for the forecast.');
+    }
+  }
+
+  private async fetchForecast(
+    latitude: number,
+    longitude: number,
+    forecastType: 'hourly' | 'daily' | 'current',
+    parameters: string[],
+  ): Promise<MarineApiResponse> {
+    this.validateCoordinates(latitude, longitude);
+    this.validateParameters(parameters);
+
+    const url = new URL(this.baseUrl);
+    url.searchParams.append('latitude', latitude.toString());
+    url.searchParams.append('longitude', longitude.toString());
+    url.searchParams.append(forecastType, parameters.join(','));
+
+    try {
+      const response = await this.httpClient.get<MarineApiResponse>(
+        url.toString(),
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error fetching ${forecastType} forecast: ${error}`);
+    }
+  }
+
+  public getHourlyForecast(
     latitude: number,
     longitude: number,
     parameters: string[],
   ): Promise<MarineApiResponse> {
-    if (parameters.length === 0) {
-      throw new Error(
-        'At least one parameter is required for the hourly forecast.',
-      );
-    }
-    const url = this.constructUrl(latitude, longitude, 'hourly', parameters);
-    try {
-      const response = await axios.get<MarineApiResponse>(url);
-      return response.data;
-    } catch (error) {
-      // Handle or rethrow the error as needed
-      throw error;
-    }
+    return this.fetchForecast(latitude, longitude, 'hourly', parameters);
   }
 
-  // Method for daily forecast request
-  public async getDailyForecast(
+  public getDailyForecast(
     latitude: number,
     longitude: number,
     parameters: string[],
   ): Promise<MarineApiResponse> {
-    if (parameters.length === 0) {
-      throw new Error(
-        'At least one parameter is required for the daily forecast.',
-      );
-    }
-
-    const url = this.constructUrl(latitude, longitude, 'daily', parameters);
-    try {
-      const response = await axios.get<MarineApiResponse>(url);
-      return response.data;
-    } catch (error) {
-      // Handle or rethrow the error as needed
-      throw error;
-    }
+    return this.fetchForecast(latitude, longitude, 'daily', parameters);
   }
 
-  // Method for current forecast request
-  public async getCurrentForecast(
+  public getCurrentForecast(
     latitude: number,
     longitude: number,
     parameters: string[],
   ): Promise<MarineApiResponse> {
-    if (parameters.length === 0) {
-      throw new Error(
-        'At least one parameter is required for the current forecast.',
-      );
-    }
-
-    const url = this.constructUrl(latitude, longitude, 'current', parameters);
-    try {
-      const response = await axios.get<MarineApiResponse>(url);
-      return response.data;
-    } catch (error) {
-      // Handle or rethrow the error as needed
-      throw error;
-    }
+    return this.fetchForecast(latitude, longitude, 'current', parameters);
   }
 }
 
