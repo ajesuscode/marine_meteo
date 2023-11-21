@@ -93,7 +93,7 @@ interface Units {
 }
 
 // SDK class
-class MarineApiSdk {
+class OpenMarine {
   private baseUrl: string = 'https://marine-api.open-meteo.com/v1/marine';
   private httpClient: AxiosInstance;
 
@@ -142,7 +142,7 @@ class MarineApiSdk {
     }
   }
 
-  public getHourlyForecast(
+  public getHourly(
     latitude: number,
     longitude: number,
     parameters: string[],
@@ -150,7 +150,7 @@ class MarineApiSdk {
     return this.fetchForecast(latitude, longitude, 'hourly', parameters);
   }
 
-  public getDailyForecast(
+  public getDaily(
     latitude: number,
     longitude: number,
     parameters: string[],
@@ -158,7 +158,7 @@ class MarineApiSdk {
     return this.fetchForecast(latitude, longitude, 'daily', parameters);
   }
 
-  public getCurrentForecast(
+  public getCurrent(
     latitude: number,
     longitude: number,
     parameters: string[],
@@ -167,4 +167,4 @@ class MarineApiSdk {
   }
 }
 
-export default MarineApiSdk;
+export default OpenMarine;

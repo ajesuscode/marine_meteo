@@ -1,6 +1,6 @@
 // tests/marineApiSdk.test.ts
 
-import MarineApiSdk from '../src/marineApiSdk';
+import MarineApiSdk from '../src/openMarine';
 import axios from 'axios';
 
 jest.mock('axios');
