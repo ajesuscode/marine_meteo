@@ -4,7 +4,9 @@
   "description": "Typescript client SDK for open meteo marine api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "example": "npx ts-node ./example/marineExample.ts ",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type": "npx tsc --noEmit"
   },
   "keywords": [
     "sdk",
