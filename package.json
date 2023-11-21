@@ -1,0 +1,23 @@
+{
+  "name": "marine_meteo",
+  "version": "1.0.0",
+  "description": "Typescript client SDK for open meteo marine api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sdk",
+    "marine",
+    "typescript"
+  ],
+  "author": "aJesusCode",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2"
+  }
+}
