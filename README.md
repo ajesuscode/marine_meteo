@@ -14,7 +14,7 @@ OpenMarine offers an easy-to-use interface to fetch real-time marine weather inf
 Install OpenMarine using npm:
 
 ```bash
-npm install open-marine
+npm install marine_meteo
 ```
 
 ### Basic Setup
@@ -22,7 +22,7 @@ npm install open-marine
 To start using OpenMarine, import it into your project:
 
 ```typescript
-import OpenMarine from 'open-marine';
+import OpenMarine from 'marine_meteo';
 ```
 
 ### Usage Examples

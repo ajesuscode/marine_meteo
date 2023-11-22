@@ -1,9 +1,10 @@
 {
   "name": "marine_meteo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Typescript client SDK for open meteo marine api",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "tsc",
     "example": "npx ts-node ./example/marineExample.ts ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "type": "npx tsc --noEmit"
@@ -13,8 +14,16 @@
     "marine",
     "typescript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajesuscode/marine_meteo.git"
+  },
   "author": "aJesusCode",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajesuscode/marine_meteo/issues"
+  },
+  "homepage": "https://github.com/ajesuscode/marine_meteo#readme",
   "devDependencies": {
     "@types/jest": "^29.5.9",
     "eslint": "^8.54.0",
