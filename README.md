@@ -1,4 +1,8 @@
-# OpenMarine SDK
+<p align="center">
+  <img src="images/marine_meteo_logo.png" width="250" height="280" alt="open_marine_logo">
+</p
+
+# Open Meteo Marine SDK
 
 ## Introduction
 
