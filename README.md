@@ -136,4 +136,4 @@ This project is open source and we welcome contributions. Here are some ways you
 - **Feature Requests**: If you have an idea for a new feature or an improvement to an existing feature, please open an issue to discuss it. Be sure to explain in detail what you want and why it would be useful.
 - **Pull Requests**: If you have made a change to the code, please open a pull request. Include a detailed explanation of your changes in the description.
 
-### For more information and details you can check [Open Meteo](https://open-meteo.com/)
+### For more information and details you can check [Open Meteo GitHub](https://github.com/open-meteo/open-meteo)
